@@ -1,0 +1,90 @@
+echo '
+from flask import Flask
+app = Flask(__name__)
+@app.route("/")
+def hello():
+    return "Docker is easy!"
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=80)
+' > basic.py
+8:22
+FROM ubuntu
+RUN apt-get update -y
+RUN apt-get install python3 -y
+RUN apt-get install python3-pip -y
+RUN pip3 install flask
+COPY . /app
+WORKDIR /app
+CMD python3 ./basic.py
+
+echo 'FROM ubuntu
+RUN apt-get update -y
+RUN apt-get install python3 -y
+RUN apt-get install python3-pip -y
+RUN pip3 install flask
+COPY . /app
+WORKDIR /app
+CMD python3 ./basic.py' > Dockerfile
+
+
+docker build -t "tecprodevops/flask-app:1.0" -f .
+docker build -t "tecprodevops/flask-app:1.0"  .
+
+
+docker run -d --name basic -p 80:80 tecprodevops/flask-app:1.0
+
+docker push tecprodevops/flask-app:1.0
+
+
+FROM python:alpine
+RUN pip install flask
+COPY . /app
+WORKDIR /app
+EXPOSE 80
+CMD python ./basic.py
+9:29
+docker build -t "tecprodevops/flask-app:2.0" -f ./Dockerfile-alpine .
+9:33
+docker run -d --name basic -p 8080:80 tecprodevops/flask-app:2.0
+
+Erkan Dormen  
+FROM openjdk:8
+COPY /source /app
+WORKDIR /app
+RUN javac HelloWorld.java
+CMD ["java", "HelloWorld"]
+public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello to Docker Container World!");
+    }
+}
+docker build -t "tecprodevops/hello-world-jdk" -f ./Dockerfile-msdf-jdk .
+
+
+docker run --name hello-world-jdk tecprodevops/hello-world-jdk
+docker cp hello-world-jdk:/app/HelloWorld.class ./temp
+echo '
+FROM mcr.microsoft.com/java/jre:8-zulu-alpine
+COPY /temp /app
+WORKDIR /app
+CMD ["java", "HelloWorld"]'
+> Dockerfile-msdf-jre
+docker build -t "tecprodevops/hello-world-jre" -f ./Dockerfile-msdf-jre .
+docker run --name hello-world-jre tecprodevops/hello-world-jre
+
+# Stage 1 Creating a temporary base image
+FROM openjdk:8 AS compiler
+COPY /source /app
+WORKDIR /app
+RUN javac HelloWorld.java
+# Stage 2
+FROM mcr.microsoft.com/java/jre:15-zulu-alpine
+WORKDIR /app
+COPY --from=compiler /app/HelloWorld.class .
+CMD ["java", "HelloWorld"]
+docker build -t "tecprodevops/hello-world-msdf" -f ./Dockerfile-msdf .
+
+
+
+
+

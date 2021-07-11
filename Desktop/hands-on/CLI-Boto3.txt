@@ -1,0 +1,112 @@
+#Intalling CLI
+Download and run the AWS CLI MSI installer for Windows (64-bit):
+https://awscli.amazonaws.com/AWSCLIV2.msi
+
+For Linux:
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+
+
+#To confirm the Intallation
+On cmd run following command
+
+aws --version
+
+#For Configuring AWS CLI
+
+aws configure
+-answer the required field
+
+sample::
+AWS Access Key ID [None]: AKIAIOSFODNN7EXAMPLE
+AWS Secret Access Key [None]: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+Default region name [None]: us-west-2
+Default output format [None]: json
+
+
+#After Configuration on home directory check .aws directory
+
+
+#Using the CLI
+
+#S3 
+
+-to create a bucket
+
+aws s3 mb s3://bucket-name   (If you dont specifiy region, bucket will be in your default region)
+
+-TO list buckets (It may take time)
+
+aws s3 ls  --region eu-west-1
+
+-including region makes it easier to find th targets
+
+aws s3 ls --region eu-west-1
+
+-To Copy an object to a bucket
+
+aws s3 cp <source> s3://bucketname
+
+
+-TO see the Objects in a bucket
+
+aws s3 ls s3://bucket-name --region eu-west-1
+
+
+_To delete a bucket 
+
+aws s3 rb s3://bucket-name
+or
+
+aws s3 rb s3://bucket-name --force
+
+
+#BOTO3 is pyhton module for AWS management
+#To install boto3 package
+
+pip install boto3
+
+
+#Sample Code For S3 management
+import boto3
+
+# Let's use Amazon S3
+s3 = boto3.resource('s3')
+
+# Print out bucket names
+for bucket in s3.buckets.all():
+    print(bucket.name)  
+
+
+
+#Sample Code for Ec2 manageing with boto3
+
+import boto3
+ec2 = boto3.resource('ec2')
+client = boto3.client('ec2')
+
+# create a new EC2 instance
+"""instances = ec2.create_instances(
+     ImageId='ami-0ac43988dfd31ab9a',
+     MinCount=1,
+     MaxCount=1,
+     InstanceType='t2.micro',
+     KeyName='myfirstintance'
+ )"""
+
+
+
+ #Stop instance
+"""
+response = client.stop_instances(
+    InstanceIds=[
+        'i-038317b66a88cafb9',
+    ],
+)
+
+print(response)"""
+
+reference :
+https://docs.aws.amazon.com/cli/latest/userguide/cli-services-s3-commands.html
+https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html
