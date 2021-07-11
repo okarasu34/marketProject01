@@ -10,6 +10,7 @@ import java.util.List;
 // foreEach(), map(), filter(), reduce() gibi HOF'lar fonksiyonel interfaceler ile çalıştığı için
 // içerisinde Lambda fonksiyonları yazmak mümkündür.
 // Javada genelde bu gibi fonksiyonlar üzerinden Lambda ifadeleri kullanılmaktadır.
+// java lambda fonksiyonlari
 
 public class Lambda01Kurallar {
     public static void main(String[] args) {
